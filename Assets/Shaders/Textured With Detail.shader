@@ -44,7 +44,7 @@ Shader "Custom/Textured With Detail" {
 
 			float4 MyFragmentProgram(Interpolators i) : SV_TARGET {
 			    float4 color = tex2D(_MainTex, i.uv) * _Tint;
-				color *= tex2D(_DetailTex, i.uvDetailed) * 2;
+				color *= tex2D(_DetailTex, i.uvDetailed) * unity_ColorSpaceDouble;
 				return color;
 			}
 
