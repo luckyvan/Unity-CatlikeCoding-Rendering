@@ -4,7 +4,8 @@ Shader "Custom/Textured With Detail" {
 
     Properties {
 	    _Tint ("Tint", Color) = (1, 1, 1, 1)
-        _MainTex ("Texture", 2D) = "white" {}	
+        _MainTex ("Texture", 2D) = "white" {}
+		_DetailedTex ("Detailed Texture", 2D) = "gray" {}
 	}
 
 	SubShader {
@@ -18,7 +19,9 @@ Shader "Custom/Textured With Detail" {
 
 			float4 _Tint;
 			sampler2D _MainTex;
+			sampler2D _DetailedTex;
 			float4 _MainTex_ST;
+			float4 _DetaledTex_ST;
 
 			struct VertexData{
 			    float4 position: POSITION;
@@ -39,7 +42,7 @@ Shader "Custom/Textured With Detail" {
 
 			float4 MyFragmentProgram(Interpolators i) : SV_TARGET {
 			    float4 color = tex2D(_MainTex, i.uv) * _Tint;
-				color *= tex2D(_MainTex, i.uv * 10);
+				color *= tex2D(_MainTex, i.uv * 10) * 2;
 				return color;
 			}
 
