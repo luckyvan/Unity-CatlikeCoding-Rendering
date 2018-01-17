@@ -4,6 +4,8 @@ Shader "Custom/Texture Splatting" {
 
     Properties {
         _MainTex ("Splat Map", 2D) = "white" {}	
+		[NoScaleOffset] _Texture1 ("Texture 1", 2D) = "white" {}
+		[NoScaleOffset] _Texture2 ("Texture 2", 2D) = "white" {}
 	}
 
 	SubShader {
@@ -17,6 +19,8 @@ Shader "Custom/Texture Splatting" {
 
 			sampler2D _MainTex;
 			float4 _MainTex_ST;
+
+			sampler2D _Texture1, _Texture2;
 
 			struct VertexData{
 			    float4 position: POSITION;
@@ -32,17 +36,12 @@ Shader "Custom/Texture Splatting" {
 			Interpolators MyVertexProgram(VertexData v) {
 			    Interpolators i;
 			    i.position = UnityObjectToClipPos(v.position);
-			    //i.localPosition = position.xyz;
-				//i.uv = v.uv;
-				//i.uv = v.uv * _MainTex_ST.xy + _MainTex_ST.zw;
-				i.uv = TRANSFORM_TEX(v.uv, _MainTex);
+	    		i.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return i;
 			}
 
 			float4 MyFragmentProgram(Interpolators i) : SV_TARGET {
-			    //return float4(i.localPosition + 0.5, 1) * _Tint;;
-				//return float4(i.uv, 1, 1);
-				return tex2D(_MainTex, i.uv) ;
+				return tex2D(_Texture1, i.uv) + tex2D(_Texture2, i.uv) ;
 			}
 
 			ENDCG
